@@ -1,26 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css"; // Asume que aquí importas tu Tailwind CSS
+import "./index.css";
 import 'leaflet/dist/leaflet.css';
 // Importa tus componentes de página
 import { LoginPage } from "./pages/LoginPage";
-import { GuestsPage } from "./pages/GuestsPage";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
 import { ProtectedRoute } from "./customComponents/ProtectedRoute";
 import { AuthProvider } from "./context/AuthProvider";
+import { JustMarriedPage } from "./pages/JustMarriedPage";
+import { GuestProvider } from "./context/GuestContext";
 
-// 1. Define el objeto de rutas
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ConfirmationPage />, // Página principal: Formulario de Confirmación
+    element: <ConfirmationPage />,
   },
   {
     path: "/dashboard",
     element: (
       <ProtectedRoute>
-        <GuestsPage />
+        <JustMarriedPage />
       </ProtectedRoute>
     ), // Página de Invitados: Información y Asistencia Confirmada
   },
@@ -40,7 +40,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
+      <GuestProvider>
     <RouterProvider router={router} />
+    </GuestProvider>
     </AuthProvider>
   </React.StrictMode>
 );

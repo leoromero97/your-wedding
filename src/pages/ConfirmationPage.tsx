@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { MapPin, Music, Shirt } from "lucide-react";
-import { LOCATION, MapSection } from "@/components/custom/MapSection";
-import Button from "@/components/custom/Button";
-import Illustration from "@/components/custom/Illustration";
+import { Check, Copy, MapPin } from "lucide-react";
+import { LOCATION, MapSection } from "@/components/MapSection";
+import Button from "@/components/Button";
+import Illustration from "@/components/Illustration";
+import Hero from "@/components/Hero";
+import { BANK_DATA } from "@/constants/bankData";
+import { useGuests } from "@/context/GuestContext";
 
 // --- CONSTANTES ---
 const TARGET_DATE = new Date("2026-03-28T00:00:00");
@@ -25,6 +28,29 @@ export const ConfirmationPage = () => {
 
   // Modal de Regalo
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+const { addGuest } = useGuests();
+const [formData, setFormData] = useState({ firstName: '', lastName: '', isComing: true });
+
+const handleConfirmSubmission = (e: React.FormEvent) => {
+  e.preventDefault();
+  addGuest(formData);
+  setIsConfirmModalOpen(false);
+  setFormData({ firstName: '', lastName: '', isComing: true }); // Reset
+  alert("¡Gracias por confirmar!");
+};
+
+  const handleCopyAlias = async () => {
+    try {
+      await navigator.clipboard.writeText(BANK_DATA.alias);
+      setCopied(true);
+      // Revertir el texto del botón después de 2 segundos
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Error al copiar: ", err);
+    }
+  };
 
   // --- LÓGICA DEL CONTADOR ---
   useEffect(() => {
@@ -68,27 +94,12 @@ export const ConfirmationPage = () => {
 
   return (
     <div className="min-h-screen bg-white text-beige-800 font-sans">
-      {/* 1. SECCIÓN HERO */}
-      <header className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <img
-          src={HERO_IMAGE_URL}
-          alt="Evento"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/60" /> {/* Overlay */}
-        <div className="relative z-10 text-center text-beige-100 px-4">
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 uppercase tracking-widest">
-            ¡Nos casamos!
-          </h1>
-          <p className="text-xl md:text-2xl font-light italic mb-6">
-            Mili & Nico
-          </p>
-          <h2 className="text-4xl md:text-6xl font-bold mb-4 uppercase tracking-widest">
-            28 | 03 | 2026
-          </h2>
-        </div>
-      </header>
-
+      <Hero
+        title="¡Nos casamos!"
+        subtitle="Mili & Nico"
+        description="28 | 03 | 2026"
+        imageUrl={HERO_IMAGE_URL}
+      />
       <main>
         {/* 2. CONTADOR Y CTA */}
         <section className="py-16 bg-beige-100 text-center px-4">
@@ -112,8 +123,74 @@ export const ConfirmationPage = () => {
                 </div>
               ))}
           </div>
-          <Button variant="filled">Confirmar asistencia</Button>
+          <Button variant="filled" className="justify-self-center" onClick={() => setIsConfirmModalOpen(!isConfirmModalOpen)}>
+            Confirmar asistencia
+          </Button>
         </section>
+        {isConfirmModalOpen && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <form 
+      onSubmit={handleConfirmSubmission}
+      className="bg-beige-50 w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6"
+    >
+      <h2 className="text-2xl font-bold italic text-beige-900 border-b border-beige-200 pb-2">
+        Confirmar Asistencia
+      </h2>
+      
+      <div className="space-y-4">
+        <input
+          required
+          type="text"
+          placeholder="Nombre"
+          className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
+          value={formData.firstName}
+          onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+        />
+        <input
+          required
+          type="text"
+          placeholder="Apellido"
+          className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
+          value={formData.lastName}
+          onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+        />
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-sm font-bold text-beige-700 uppercase">¿Asistirás?</p>
+        <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
+          <input 
+            type="radio" 
+            checked={formData.isComing === true} 
+            onChange={() => setFormData({...formData, isComing: true})}
+            className="accent-beige-800 w-4 h-4"
+          />
+          <span className="text-beige-900">Sí, voy!</span>
+        </label>
+        <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
+          <input 
+            type="radio" 
+            checked={formData.isComing === false} 
+            onChange={() => setFormData({...formData, isComing: false})}
+            className="accent-beige-800 w-4 h-4"
+          />
+          <span className="text-beige-900">No puedo asistir</span>
+        </label>
+      </div>
+
+      <div className="flex gap-3 pt-4">
+        <Button type="submit" isFullWidth>Confirmar</Button>
+        <Button 
+          type="button" 
+          variant="outlined" 
+          onClick={() => setIsConfirmModalOpen(false)}
+        >
+          Cancelar
+        </Button>
+      </div>
+    </form>
+  </div>
+)}
 
         {/* 3. LUGAR Y UBICACIÓN */}
         <section className="py-16 grid md:grid-cols-2 container mx-auto px-6 gap-12 border-b">
@@ -124,7 +201,7 @@ export const ConfirmationPage = () => {
               <p className="text-lg font-semibold">Ubicación:</p>
             </div>
             <p className="mb-4 text-beige-700">{LOCATION.address}</p>
-            <a href={LOCATION.url} target="_blank" rel="noopener noreferrer">
+            <a href={LOCATION.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold">
               Ver en Google Maps
             </a>
 
@@ -153,7 +230,7 @@ export const ConfirmationPage = () => {
             colorTertiary="black"
             className="h-24 w-24 mb-4"
           />
-          <h2 className="text-2xl font-bold mb-4 uppercase tracking-widest">
+          <h2 className="text-2xl font-bold mb-4 tracking-widest">
             Dress Code
           </h2>
           <p className="text-beige-700 italic text-lg">
@@ -208,14 +285,18 @@ export const ConfirmationPage = () => {
             colaborar con mis sueños y anhelos ✨<br />
             <strong className="block mt-4">¡Muchas gracias!</strong>
           </p>
-          <Button onClick={() => setIsModalOpen(true)} variant="filled">
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            variant="filled"
+            className="justify-self-center"
+          >
             Hacer regalo
           </Button>
         </section>
       </main>
 
       {/* FOOTER */}
-      <footer className="py-12 bg-beige-100 text-center border-t border-beige-200">
+      <footer className="py-12 px-4 bg-beige-100 text-center border-t border-beige-200">
         <p className="italic text-lg mb-2">
           ¡Gracias por acompañarme en este momento tan importante! 🤍
         </p>
@@ -250,24 +331,26 @@ export const ConfirmationPage = () => {
             <div className="bg-beige-100 p-4 rounded-lg border border-stone-200">
               <p className="text-sm text-gray-500 uppercase font-bold">Alias</p>
               <p className="text-xl font-mono text-stone-800 mb-4">
-                SUEÑOS.MIOS.2026
+                {BANK_DATA.alias}
               </p>
               <p className="text-sm text-gray-500 uppercase font-bold">Banco</p>
-              <p className="text-md text-stone-800">
-                Banco Santander - Cuenta Corriente
-              </p>
+              <p className="text-md text-stone-800">{BANK_DATA.bankName}</p>
             </div>
-                        <Button
-              onClick={() => setIsModalOpen(false)}
-            >
-              Copiar alias
-            </Button>
-            <Button
-              onClick={() => setIsModalOpen(false)}
-              variant="outlined"
-            >
-              Entendido
-            </Button>
+            <footer className="flex items-center gap-4 pt-10">
+              <Button
+                onClick={handleCopyAlias}
+                variant={copied ? "outlined" : "filled"}
+
+                // Si tienes el componente Button con soporte para iconos:
+                icon={copied ? Check : Copy}
+                className="grow"
+              >
+                {copied ? "¡Copiado!" : "Copiar alias"}
+              </Button>
+              <Button onClick={() => setIsModalOpen(false)} variant="outlined" className="grow">
+                Entendido
+              </Button>
+            </footer>
           </div>
         </div>
       )}
