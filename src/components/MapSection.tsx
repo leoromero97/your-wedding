@@ -21,7 +21,7 @@ const POSITION: [number, number] = [LOCATION.lat, LOCATION.lng]; // Coordenadas 
 
 export const MapSection = () => {
   return (
-    <div className="h-64 w-full rounded-lg overflow-hidden shadow-inner border border-stone-200">
+    <div className="h-64 w-full rounded-lg overflow-hidden shadow-inner border border-stone-200 z-50">
       <MapContainer 
         center={POSITION} 
         zoom={15} 
