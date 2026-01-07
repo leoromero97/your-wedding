@@ -21,11 +21,13 @@ const POSITION: [number, number] = [LOCATION.lat, LOCATION.lng]; // Coordenadas 
 
 export const MapSection = () => {
   return (
-    <div className="h-64 w-full rounded-lg overflow-hidden shadow-inner border border-stone-200 z-50">
+    <div className="h-64 w-full rounded-lg overflow-hidden shadow-inner border border-stone-200 z-0 relative">
       <MapContainer 
         center={POSITION} 
         zoom={15} 
         className="h-full w-full"
+        scrollWheelZoom={false}
+        touchZoom={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

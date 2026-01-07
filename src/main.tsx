@@ -25,8 +25,8 @@ const router = createBrowserRouter([
     ), // Página de Invitados: Información y Asistencia Confirmada
   },
   {
-    path: "/admin",
-    element: <LoginPage />, // Página de Administración: Contraseña de Acceso
+    path: "/login",
+    element: <LoginPage />,
   },
   // Opcional: Ruta para manejar errores o 404
   /*

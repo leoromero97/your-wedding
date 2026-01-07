@@ -24,7 +24,7 @@ export const ConfirmationPage = () => {
   // --- MANEJADORES ---
   const handleConfirmSubmission = (e: React.FormEvent) => {
     e.preventDefault();
-    addGuest(formData);
+    addGuest?.(formData);
     setIsConfirmModalOpen(false);
     setFormData({ firstName: '', lastName: '', isComing: true });
     alert("¡Gracias por confirmar!");
@@ -116,7 +116,7 @@ export const ConfirmationPage = () => {
 
         {/* MODAL CONFIRMACIÓN ASISTENCIA */}
         {isConfirmModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
             <form 
               onSubmit={handleConfirmSubmission}
               className="bg-beige-50 w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6"
@@ -182,7 +182,7 @@ export const ConfirmationPage = () => {
         <section className="py-16 grid md:grid-cols-2 container mx-auto px-6 gap-12 border-b">
           <div>
             <h2 className="text-3xl font-bold mb-6 italic text-beige-900">¿Dónde?</h2>
-            <div className="flex gap-2 items-center mb-2">
+            <div className="flex gap-2 items-center mb-2 ">
               <MapPin className="text-beige-700 w-5 h-5" />
               <p className="text-lg font-semibold text-beige-800">Ubicación:</p>
             </div>
@@ -202,7 +202,7 @@ export const ConfirmationPage = () => {
               </div>
             </div>
           </div>
-          <div className="h-64 md:h-80 rounded-lg overflow-hidden border border-beige-200 shadow-sm">
+          <div className=" rounded-lg overflow-hidden border border-beige-200 shadow-sm overflow-y-hidden">
             <MapSection />
           </div>
         </section>

@@ -13,7 +13,7 @@ export interface Guest {
   firstName: string;
   lastName: string;
   isComing: boolean;
-  tableNumber: number;
+  tableNumber?: number;
 }
 
 export interface Song {
