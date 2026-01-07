@@ -21,7 +21,7 @@ export default function Button({
   variant = "filled",
   component = "button",
   isFullWidth = false,
-  icon: Icon, // Renombramos a Mayúscula para usarlo como componente
+  icon: Icon,
   iconPosition = "start",
   iconSize = 18,
   ...props

@@ -4,52 +4,49 @@ import { LOCATION, MapSection } from "@/components/MapSection";
 import Button from "@/components/Button";
 import Illustration from "@/components/Illustration";
 import Hero from "@/components/Hero";
-import { BANK_DATA } from "@/constants/bankData";
-import { useGuests } from "@/context/GuestContext";
+import { BANK_DATA, HERO_IMAGE_URL, TARGET_DATE } from "@/constants/constants";
+import { useWedding } from "@/context/WeddingContext"; // Custom Hook
 
-// --- CONSTANTES ---
-const TARGET_DATE = new Date("2026-03-28T00:00:00");
-const HERO_IMAGE_URL =
-  "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
 
 export const ConfirmationPage = () => {
+  // --- CONTEXTO (Firebase) ---
+  const { addGuest, addSong, songs } = useWedding();
+
   // --- ESTADOS ---
-  // Contador
-  const [timeLeft, setTimeLeft] = useState({
-    months: 0,
-    days: 0,
-    hours: 0,
-    minutes: 0,
-  });
-
-  // Lista de canciones
+  const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0 });
   const [songInput, setSongInput] = useState("");
-  const [playlist, setPlaylist] = useState<{ song: string }[]>([]);
-
-  // Modal de Regalo
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-const { addGuest } = useGuests();
-const [formData, setFormData] = useState({ firstName: '', lastName: '', isComing: true });
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', isComing: true });
 
-const handleConfirmSubmission = (e: React.FormEvent) => {
-  e.preventDefault();
-  addGuest(formData);
-  setIsConfirmModalOpen(false);
-  setFormData({ firstName: '', lastName: '', isComing: true }); // Reset
-  alert("¡Gracias por confirmar!");
-};
+  // --- MANEJADORES ---
+  const handleConfirmSubmission = (e: React.FormEvent) => {
+    e.preventDefault();
+    addGuest(formData);
+    setIsConfirmModalOpen(false);
+    setFormData({ firstName: '', lastName: '', isComing: true });
+    alert("¡Gracias por confirmar!");
+  };
 
   const handleCopyAlias = async () => {
     try {
       await navigator.clipboard.writeText(BANK_DATA.alias);
       setCopied(true);
-      // Revertir el texto del botón después de 2 segundos
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Error al copiar: ", err);
     }
+  };
+
+  const handleAddSong = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!songInput.trim()) return;
+
+    // Guardamos en Firebase a través del contexto
+    addSong({ song: songInput });
+    setSongInput("");
   };
 
   // --- LÓGICA DEL CONTADOR ---
@@ -57,7 +54,6 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
     const timer = setInterval(() => {
       const now = new Date();
       const difference = TARGET_DATE.getTime() - now.getTime();
-
       if (difference <= 0) {
         clearInterval(timer);
       } else {
@@ -70,27 +66,16 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
         });
       }
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
-  // --- LÓGICA DE CANCIONES (LocalStorage) ---
   useEffect(() => {
-    const savedSongs = localStorage.getItem("party_playlist");
-    if (savedSongs) setPlaylist(JSON.parse(savedSongs));
-  }, []);
-
-  const handleAddSong = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!songInput.trim()) return;
-
-    const newEntry = { song: songInput };
-    const updatedPlaylist = [newEntry, ...playlist].slice(0, 5); // Solo las últimas 5
-
-    setPlaylist(updatedPlaylist);
-    localStorage.setItem("party_playlist", JSON.stringify(updatedPlaylist));
-    setSongInput("");
-  };
+  if (isModalOpen || isConfirmModalOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'unset';
+  }
+}, [isModalOpen, isConfirmModalOpen]);
 
   return (
     <div className="min-h-screen bg-white text-beige-800 font-sans">
@@ -100,6 +85,7 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
         description="28 | 03 | 2026"
         imageUrl={HERO_IMAGE_URL}
       />
+      
       <main>
         {/* 2. CONTADOR Y CTA */}
         <section className="py-16 bg-beige-100 text-center px-4">
@@ -123,100 +109,100 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
                 </div>
               ))}
           </div>
-          <Button variant="filled" className="justify-self-center" onClick={() => setIsConfirmModalOpen(!isConfirmModalOpen)}>
+          <Button variant="filled" className="justify-self-center" onClick={() => setIsConfirmModalOpen(true)}>
             Confirmar asistencia
           </Button>
         </section>
+
+        {/* MODAL CONFIRMACIÓN ASISTENCIA */}
         {isConfirmModalOpen && (
-  <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-    <form 
-      onSubmit={handleConfirmSubmission}
-      className="bg-beige-50 w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6"
-    >
-      <h2 className="text-2xl font-bold italic text-beige-900 border-b border-beige-200 pb-2">
-        Confirmar Asistencia
-      </h2>
-      
-      <div className="space-y-4">
-        <input
-          required
-          type="text"
-          placeholder="Nombre"
-          className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
-          value={formData.firstName}
-          onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-        />
-        <input
-          required
-          type="text"
-          placeholder="Apellido"
-          className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
-          value={formData.lastName}
-          onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-        />
-      </div>
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <form 
+              onSubmit={handleConfirmSubmission}
+              className="bg-beige-50 w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6"
+            >
+              <h2 className="text-2xl font-bold italic text-beige-900 border-b border-beige-200 pb-2">
+                Confirmar Asistencia
+              </h2>
+              
+              <div className="space-y-4">
+                <input
+                  required
+                  type="text"
+                  placeholder="Nombre"
+                  className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                  maxLength={30}
+                />
+                <input
+                  required
+                  type="text"
+                  placeholder="Apellido"
+                  className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                  maxLength={30}
+                />
+              </div>
 
-      <div className="flex flex-col gap-3">
-        <p className="text-sm font-bold text-beige-700 uppercase">¿Asistirás?</p>
-        <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
-          <input 
-            type="radio" 
-            checked={formData.isComing === true} 
-            onChange={() => setFormData({...formData, isComing: true})}
-            className="accent-beige-800 w-4 h-4"
-          />
-          <span className="text-beige-900">Sí, voy!</span>
-        </label>
-        <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
-          <input 
-            type="radio" 
-            checked={formData.isComing === false} 
-            onChange={() => setFormData({...formData, isComing: false})}
-            className="accent-beige-800 w-4 h-4"
-          />
-          <span className="text-beige-900">No puedo asistir</span>
-        </label>
-      </div>
+              <div className="flex flex-col gap-3">
+                <p className="text-sm font-bold text-beige-700 uppercase">¿Asistirás?</p>
+                <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
+                  <input 
+                    type="radio" 
+                    checked={formData.isComing === true} 
+                    onChange={() => setFormData({...formData, isComing: true})}
+                    className="accent-beige-800 w-4 h-4"
+                  />
+                  <span className="text-beige-900">Sí, voy!</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
+                  <input 
+                    type="radio" 
+                    checked={formData.isComing === false} 
+                    onChange={() => setFormData({...formData, isComing: false})}
+                    className="accent-beige-800 w-4 h-4"
+                  />
+                  <span className="text-beige-900">No puedo asistir</span>
+                </label>
+              </div>
 
-      <div className="flex gap-3 pt-4">
-        <Button type="submit" isFullWidth>Confirmar</Button>
-        <Button 
-          type="button" 
-          variant="outlined" 
-          onClick={() => setIsConfirmModalOpen(false)}
-        >
-          Cancelar
-        </Button>
-      </div>
-    </form>
-  </div>
-)}
+              <div className="flex gap-3 pt-4">
+                <Button type="submit" isFullWidth>Confirmar</Button>
+                <Button type="button" variant="outlined" onClick={() => setIsConfirmModalOpen(false)}>
+                  Cancelar
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {/* 3. LUGAR Y UBICACIÓN */}
         <section className="py-16 grid md:grid-cols-2 container mx-auto px-6 gap-12 border-b">
           <div>
-            <h2 className="text-3xl font-bold mb-6 italic">¿Dónde?</h2>
-            <div className="flex gap-2 items-center">
+            <h2 className="text-3xl font-bold mb-6 italic text-beige-900">¿Dónde?</h2>
+            <div className="flex gap-2 items-center mb-2">
               <MapPin className="text-beige-700 w-5 h-5" />
-              <p className="text-lg font-semibold">Ubicación:</p>
+              <p className="text-lg font-semibold text-beige-800">Ubicación:</p>
             </div>
             <p className="mb-4 text-beige-700">{LOCATION.address}</p>
-            <a href={LOCATION.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold">
+            <a href={LOCATION.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">
               Ver en Google Maps
             </a>
 
             <div className="mt-8 flex gap-8">
               <div>
-                <p className="font-semibold italic">Entrada</p>
+                <p className="font-semibold italic text-beige-900">Entrada</p>
                 <p className="text-beige-700">18:00 hs</p>
               </div>
               <div>
-                <p className="font-semibold italic">Finalización</p>
+                <p className="font-semibold italic text-beige-900">Finalización</p>
                 <p className="text-beige-700">03:00 hs</p>
               </div>
             </div>
           </div>
-          <div className="bg-gray-200 h-64 md:h-full rounded-lg flex items-center justify-center italic text-gray-500">
+          <div className="h-64 md:h-80 rounded-lg overflow-hidden border border-beige-200 shadow-sm">
             <MapSection />
           </div>
         </section>
@@ -227,10 +213,9 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
             name="dress"
             colorPrimary="#e7e5e4"
             colorSecondary="#fafaf9"
-            colorTertiary="black"
             className="h-24 w-24 mb-4"
           />
-          <h2 className="text-2xl font-bold mb-4 tracking-widest">
+          <h2 className="text-2xl font-bold mb-4 tracking-widest text-beige-900">
             Dress Code
           </h2>
           <p className="text-beige-700 italic text-lg">
@@ -239,37 +224,37 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
           </p>
         </section>
 
-        {/* 5. MÚSICA */}
+        {/* 5. MÚSICA (Conectado a Firebase) */}
         <section className="py-16 bg-beige-100 px-6">
           <div className="max-w-xl mx-auto text-center">
-            <h2 className="text-2xl font-bold mb-6 italic">
+            <h2 className="text-2xl font-bold mb-6 italic text-beige-900">
               ¡Podes recomendar alguna canción para bailar! 💃
             </h2>
-            <form onSubmit={handleAddSong} className="flex flex-col gap-4 mb-8">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Nombre de la canción y artista"
-                  className="p-3 border border-beige-800 rounded-md w-full flex grow"
-                  value={songInput}
-                  onChange={(e) => setSongInput(e.target.value)}
-                />
-                <Button variant="outlined">+</Button>
-              </div>
+            <form onSubmit={handleAddSong} className="flex gap-2 mb-8">
+              <input
+                type="text"
+                placeholder="Nombre de la canción y artista"
+                className="p-3 border border-beige-300 bg-white rounded-md w-full focus:ring-2 focus:ring-beige-500 outline-none"
+                value={songInput}
+                onChange={(e) => setSongInput(e.target.value)}
+                maxLength={50}
+              />
+              <Button variant="filled" type="submit" className="px-6">+</Button>
             </form>
 
             <div className="text-left bg-beige-50 p-6 rounded-lg shadow-sm">
-              <h3 className="text-sm font-bold uppercase mb-4 text-beige-400">
+              <h3 className="text-xs font-bold uppercase mb-4 text-beige-400 tracking-widest">
                 Últimas agregadas
               </h3>
-              <ul className="divide-y">
-                {playlist.map((item, index) => (
-                  <li key={index} className="py-3 flex justify-between">
-                    <span className="font-medium">{item.song}</span>
-                  </li>
-                ))}
-                {playlist.length === 0 && (
-                  <p className="text-beige-400 italic text-sm text-center">
+              <ul className="divide-y divide-beige-200">
+     {/* Cambia esto en la sección de música */}
+{songs.slice().reverse().slice(0, 5).map((item, index) => (
+  <li key={item.id || index} className="py-3 text-beige-800">
+    <span className="font-medium">{item.song}</span>
+  </li>
+))}
+                {songs.length === 0 && (
+                  <p className="text-beige-400 italic text-sm text-center py-4">
                     Aún no hay canciones...
                   </p>
                 )}
@@ -280,7 +265,7 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
 
         {/* 6. REGALO Y MODAL */}
         <section className="py-20 text-center px-6">
-          <p className="max-w-lg mx-auto text-xl mb-8">
+          <p className="max-w-lg mx-auto text-xl mb-8 text-beige-800">
             El mejor regalo es que vengas, pero si deseás regalarme algo, podés
             colaborar con mis sueños y anhelos ✨<br />
             <strong className="block mt-4">¡Muchas gracias!</strong>
@@ -295,62 +280,57 @@ const handleConfirmSubmission = (e: React.FormEvent) => {
         </section>
       </main>
 
-      {/* FOOTER */}
-      <footer className="py-12 px-4 bg-beige-100 text-center border-t border-beige-200">
-        <p className="italic text-lg mb-2">
+      <footer className="py-12 px-4 bg-beige-100 text-center border-t border-beige-200 text-beige-500">
+        <p className="italic text-lg mb-4 text-beige-800">
           ¡Gracias por acompañarme en este momento tan importante! 🤍
         </p>
-        <p className="text-beige-500 text-xs">
-          Copyright 2026. Todos los derechos reservados. - Creado con ❤️ por{" "}
-          <a
-            href="https://leogromero-website.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+        <p className="text-xs">
+          Copyright 2026. Todos los derechos reservados. - Creado por{" "}
+          <a href="https://leogromero-website.vercel.app/" target="_blank" rel="noopener noreferrer" className="underline">
             Leo Romero
           </a>
         </p>
       </footer>
 
-      {/* MODAL (Renderizado condicional) */}
+      {/* MODAL REGALO */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-beige-50 w-full max-w-md p-8 rounded-2xl relative shadow-2xl">
-            <Button
+            <button 
               onClick={() => setIsModalOpen(false)}
-              className="justify-self-end"
+              className="absolute top-4 right-6 text-2xl text-beige-400 hover:text-beige-800"
             >
               &times;
-            </Button>
-            <h2 className="text-3xl font-bold mb-4 italic">
+            </button>
+            <h2 className="text-3xl font-bold mb-4 italic text-beige-900">
               Colaborar con mis sueños
             </h2>
             <p className="text-beige-700 mb-6">
               Podés realizar una transferencia a la siguiente cuenta bancaria:
             </p>
-            <div className="bg-beige-100 p-4 rounded-lg border border-stone-200">
-              <p className="text-sm text-gray-500 uppercase font-bold">Alias</p>
-              <p className="text-xl font-mono text-stone-800 mb-4">
-                {BANK_DATA.alias}
-              </p>
-              <p className="text-sm text-gray-500 uppercase font-bold">Banco</p>
-              <p className="text-md text-stone-800">{BANK_DATA.bankName}</p>
+            <div className="bg-beige-100 p-6 rounded-xl border border-beige-200 space-y-4">
+              <div>
+                <p className="text-xs text-beige-500 uppercase font-bold">Alias</p>
+                <p className="text-xl font-mono text-beige-900">{BANK_DATA.alias}</p>
+              </div>
+              <div>
+                <p className="text-xs text-beige-500 uppercase font-bold">Banco</p>
+                <p className="text-md text-beige-800">{BANK_DATA.bankName}</p>
+              </div>
             </div>
-            <footer className="flex items-center gap-4 pt-10">
+            <div className="flex items-center gap-4 pt-8">
               <Button
                 onClick={handleCopyAlias}
                 variant={copied ? "outlined" : "filled"}
-
-                // Si tienes el componente Button con soporte para iconos:
                 icon={copied ? Check : Copy}
                 className="grow"
               >
                 {copied ? "¡Copiado!" : "Copiar alias"}
               </Button>
               <Button onClick={() => setIsModalOpen(false)} variant="outlined" className="grow">
-                Entendido
+                Cerrar
               </Button>
-            </footer>
+            </div>
           </div>
         </div>
       )}

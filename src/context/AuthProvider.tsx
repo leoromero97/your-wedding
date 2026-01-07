@@ -12,7 +12,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Define la contraseña simple (usar un método más seguro en producción, como hashing)
-const ADMIN_PASSWORD = "miPasswordSecreta"; 
+const ADMIN_PASSWORD = import.meta.env.VITE_PASSWORD_ADMIN; 
 
 // 2. Define el proveedor
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

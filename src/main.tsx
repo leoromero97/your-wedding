@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import 'leaflet/dist/leaflet.css';
+import "leaflet/dist/leaflet.css";
 // Importa tus componentes de página
 import { LoginPage } from "./pages/LoginPage";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
-import { ProtectedRoute } from "./customComponents/ProtectedRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthProvider";
 import { JustMarriedPage } from "./pages/JustMarriedPage";
-import { GuestProvider } from "./context/GuestContext";
+import { WeddingProvider } from "./context/WeddingContext";
 
 const router = createBrowserRouter([
   {
@@ -40,9 +40,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
-      <GuestProvider>
-    <RouterProvider router={router} />
-    </GuestProvider>
+      <WeddingProvider>
+        <RouterProvider router={router} />
+      </WeddingProvider>
     </AuthProvider>
   </React.StrictMode>
 );
