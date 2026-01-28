@@ -5,5 +5,10 @@ export const BANK_DATA = {
 // --- CONSTANTES ---
 
 export const TARGET_DATE = new Date("2026-03-28T00:00:00");
-export const HERO_IMAGE_URL =
-  "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070&auto=format&fit=crop";
+export const HERO_IMAGE_URL = "./src/assets/hero-mili-nico.jpg";
+
+export const LOCATION_PARTY = {
+  address: 'Salon: 21hs Plaisir Eventos, Zuviria 4915, Lugano, Caba',
+  startHour: '21 hs',
+  
+}
