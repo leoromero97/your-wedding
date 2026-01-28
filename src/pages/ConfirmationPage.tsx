@@ -7,26 +7,33 @@ import Hero from "@/components/Hero";
 import { BANK_DATA, HERO_IMAGE_URL, TARGET_DATE } from "@/constants/constants";
 import { useWedding } from "@/context/WeddingContext"; // Custom Hook
 
-
-
 export const ConfirmationPage = () => {
   // --- CONTEXTO (Firebase) ---
   const { addGuest, addSong, songs } = useWedding();
 
   // --- ESTADOS ---
-  const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0 });
+  const [timeLeft, setTimeLeft] = useState({
+    months: 0,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+  });
   const [songInput, setSongInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ firstName: '', lastName: '', isComing: true });
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    isComing: true,
+  });
 
   // --- MANEJADORES ---
   const handleConfirmSubmission = (e: React.FormEvent) => {
     e.preventDefault();
     addGuest?.(formData);
     setIsConfirmModalOpen(false);
-    setFormData({ firstName: '', lastName: '', isComing: true });
+    setFormData({ firstName: "", lastName: "", isComing: true });
     alert("¡Gracias por confirmar!");
   };
 
@@ -70,12 +77,12 @@ export const ConfirmationPage = () => {
   }, []);
 
   useEffect(() => {
-  if (isModalOpen || isConfirmModalOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = 'unset';
-  }
-}, [isModalOpen, isConfirmModalOpen]);
+    if (isModalOpen || isConfirmModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isModalOpen, isConfirmModalOpen]);
 
   return (
     <div className="min-h-screen bg-white text-beige-800 font-sans">
@@ -85,7 +92,7 @@ export const ConfirmationPage = () => {
         description="28 | 03 | 2026"
         imageUrl={HERO_IMAGE_URL}
       />
-      
+
       <main>
         {/* 2. CONTADOR Y CTA */}
         <section className="py-16 bg-beige-100 text-center px-4">
@@ -99,7 +106,7 @@ export const ConfirmationPage = () => {
             ]
               .filter((item) => item.value > 0)
               .map((item) => (
-                <div key={item.label} className="flex flex-col min-w-[80px]">
+                <div key={item.label} className="flex flex-col min-w-20">
                   <span className="text-4xl md:text-6xl font-bold text-stone-700">
                     {item.value}
                   </span>
@@ -109,7 +116,11 @@ export const ConfirmationPage = () => {
                 </div>
               ))}
           </div>
-          <Button variant="filled" className="justify-self-center" onClick={() => setIsConfirmModalOpen(true)}>
+          <Button
+            variant="filled"
+            className="justify-self-center"
+            onClick={() => setIsConfirmModalOpen(true)}
+          >
             Confirmar asistencia
           </Button>
         </section>
@@ -117,14 +128,14 @@ export const ConfirmationPage = () => {
         {/* MODAL CONFIRMACIÓN ASISTENCIA */}
         {isConfirmModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <form 
+            <form
               onSubmit={handleConfirmSubmission}
               className="bg-beige-50 w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6"
             >
               <h2 className="text-2xl font-bold italic text-beige-900 border-b border-beige-200 pb-2">
                 Confirmar Asistencia
               </h2>
-              
+
               <div className="space-y-4">
                 <input
                   required
@@ -132,7 +143,9 @@ export const ConfirmationPage = () => {
                   placeholder="Nombre"
                   className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
                   value={formData.firstName}
-                  onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
                   maxLength={30}
                 />
                 <input
@@ -141,27 +154,35 @@ export const ConfirmationPage = () => {
                   placeholder="Apellido"
                   className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
                   value={formData.lastName}
-                  onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
                   maxLength={30}
                 />
               </div>
 
               <div className="flex flex-col gap-3">
-                <p className="text-sm font-bold text-beige-700 uppercase">¿Asistirás?</p>
+                <p className="text-sm font-bold text-beige-700 uppercase">
+                  ¿Asistirás?
+                </p>
                 <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
-                  <input 
-                    type="radio" 
-                    checked={formData.isComing === true} 
-                    onChange={() => setFormData({...formData, isComing: true})}
+                  <input
+                    type="radio"
+                    checked={formData.isComing === true}
+                    onChange={() =>
+                      setFormData({ ...formData, isComing: true })
+                    }
                     className="accent-beige-800 w-4 h-4"
                   />
                   <span className="text-beige-900">Sí, voy!</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
-                  <input 
-                    type="radio" 
-                    checked={formData.isComing === false} 
-                    onChange={() => setFormData({...formData, isComing: false})}
+                  <input
+                    type="radio"
+                    checked={formData.isComing === false}
+                    onChange={() =>
+                      setFormData({ ...formData, isComing: false })
+                    }
                     className="accent-beige-800 w-4 h-4"
                   />
                   <span className="text-beige-900">No puedo asistir</span>
@@ -169,8 +190,14 @@ export const ConfirmationPage = () => {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <Button type="submit" isFullWidth>Confirmar</Button>
-                <Button type="button" variant="outlined" onClick={() => setIsConfirmModalOpen(false)}>
+                <Button type="submit" isFullWidth>
+                  Confirmar
+                </Button>
+                <Button
+                  type="button"
+                  variant="outlined"
+                  onClick={() => setIsConfirmModalOpen(false)}
+                >
                   Cancelar
                 </Button>
               </div>
@@ -181,13 +208,20 @@ export const ConfirmationPage = () => {
         {/* 3. LUGAR Y UBICACIÓN */}
         <section className="py-16 grid md:grid-cols-2 container mx-auto px-6 gap-12 border-b">
           <div>
-            <h2 className="text-3xl font-bold mb-6 italic text-beige-900">¿Dónde?</h2>
+            <h2 className="text-3xl font-bold mb-6 italic text-beige-900">
+              ¿Dónde?
+            </h2>
             <div className="flex gap-2 items-center mb-2 ">
               <MapPin className="text-beige-700 w-5 h-5" />
               <p className="text-lg font-semibold text-beige-800">Ubicación:</p>
             </div>
             <p className="mb-4 text-beige-700">{LOCATION.address}</p>
-            <a href={LOCATION.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">
+            <a
+              href={LOCATION.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 font-semibold hover:underline"
+            >
               Ver en Google Maps
             </a>
 
@@ -197,7 +231,9 @@ export const ConfirmationPage = () => {
                 <p className="text-beige-700">18:00 hs</p>
               </div>
               <div>
-                <p className="font-semibold italic text-beige-900">Finalización</p>
+                <p className="font-semibold italic text-beige-900">
+                  Finalización
+                </p>
                 <p className="text-beige-700">03:00 hs</p>
               </div>
             </div>
@@ -239,7 +275,9 @@ export const ConfirmationPage = () => {
                 onChange={(e) => setSongInput(e.target.value)}
                 maxLength={50}
               />
-              <Button variant="filled" type="submit" className="px-6">+</Button>
+              <Button variant="filled" type="submit" className="px-6">
+                +
+              </Button>
             </form>
 
             <div className="text-left bg-beige-50 p-6 rounded-lg shadow-sm">
@@ -247,12 +285,16 @@ export const ConfirmationPage = () => {
                 Últimas agregadas
               </h3>
               <ul className="divide-y divide-beige-200">
-     {/* Cambia esto en la sección de música */}
-{songs.slice().reverse().slice(0, 5).map((item, index) => (
-  <li key={item.id || index} className="py-3 text-beige-800">
-    <span className="font-medium">{item.song}</span>
-  </li>
-))}
+                {/* Cambia esto en la sección de música */}
+                {songs
+                  .slice()
+                  .reverse()
+                  .slice(0, 5)
+                  .map((item, index) => (
+                    <li key={item.id || index} className="py-3 text-beige-800">
+                      <span className="font-medium">{item.song}</span>
+                    </li>
+                  ))}
                 {songs.length === 0 && (
                   <p className="text-beige-400 italic text-sm text-center py-4">
                     Aún no hay canciones...
@@ -286,7 +328,12 @@ export const ConfirmationPage = () => {
         </p>
         <p className="text-xs">
           Copyright 2026. Todos los derechos reservados. - Creado por{" "}
-          <a href="https://leogromero-website.vercel.app/" target="_blank" rel="noopener noreferrer" className="underline">
+          <a
+            href="https://leogromero-website.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
             Leo Romero
           </a>
         </p>
@@ -296,7 +343,7 @@ export const ConfirmationPage = () => {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-beige-50 w-full max-w-md p-8 rounded-2xl relative shadow-2xl">
-            <button 
+            <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-4 right-6 text-2xl text-beige-400 hover:text-beige-800"
             >
@@ -310,11 +357,17 @@ export const ConfirmationPage = () => {
             </p>
             <div className="bg-beige-100 p-6 rounded-xl border border-beige-200 space-y-4">
               <div>
-                <p className="text-xs text-beige-500 uppercase font-bold">Alias</p>
-                <p className="text-xl font-mono text-beige-900">{BANK_DATA.alias}</p>
+                <p className="text-xs text-beige-500 uppercase font-bold">
+                  Alias
+                </p>
+                <p className="text-xl font-mono text-beige-900">
+                  {BANK_DATA.alias}
+                </p>
               </div>
               <div>
-                <p className="text-xs text-beige-500 uppercase font-bold">Banco</p>
+                <p className="text-xs text-beige-500 uppercase font-bold">
+                  Banco
+                </p>
                 <p className="text-md text-beige-800">{BANK_DATA.bankName}</p>
               </div>
             </div>
@@ -327,7 +380,11 @@ export const ConfirmationPage = () => {
               >
                 {copied ? "¡Copiado!" : "Copiar alias"}
               </Button>
-              <Button onClick={() => setIsModalOpen(false)} variant="outlined" className="grow">
+              <Button
+                onClick={() => setIsModalOpen(false)}
+                variant="outlined"
+                className="grow"
+              >
                 Cerrar
               </Button>
             </div>
