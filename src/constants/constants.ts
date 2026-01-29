@@ -5,6 +5,11 @@ export const BANK_DATA = {
   bankName: "Banco Santander - Cuenta Corriente",
 };
 
+export const BANK_DATA_2 = {
+  alias: "SUEÑOS.MIOS.2026",
+  bankName: "Banco Santander - Cuenta Corriente",
+};
+
 export const TARGET_DATE = new Date("2026-03-28T00:00:00");
 
 export const LOCATION_PARTY: LocationSectionTypes = {
@@ -12,10 +17,9 @@ export const LOCATION_PARTY: LocationSectionTypes = {
   type: "Salon",
   address: "Zuviría 4915, 1439 Cdad. Autónoma de Buenos Aires",
   startHour: "21 hs",
-  lat: -34.6629261,
-  lon: -58.4818313,
-  addressUrl: "https://maps.app.goo.gl/8KgCbAaGf9NhQYBm7",
-  description: "",
+  addressUrl: "https://maps.app.goo.gl/Kj5EEhjo9xiag9fZ8",
+  iframeSrc:
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.6741820938914!2d-58.48183132425719!3d-34.66293047293311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcc9699e005f77%3A0x1cb3904c304be416!2sSal%C3%B3n%20Plaisir!5e0!3m2!1ses-419!2sar!4v1769722979163!5m2!1ses-419!2sar",
 };
 
 export const LOCATION_CHURCH: LocationSectionTypes = {
@@ -24,10 +28,9 @@ export const LOCATION_CHURCH: LocationSectionTypes = {
   address:
     "Avenida General Fernández de la Cruz 2145, C1437GZA Cdad. Autónoma de Buenos Aires",
   startHour: "18 hs",
-  lat: -34.6541231,
-  lon: -58.4389654,
   addressUrl: "https://maps.app.goo.gl/iJQYjAfUDcnFfs4YA",
-  description: "Entrar por Av. Cruz y Rivera Indarte",
+  iframeSrc:
+    "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3282.022959295948!2d-58.4389654!3d-34.6541231!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccbc078ace2eb%3A0x458218af4657bdf0!2sCiudad%20Deportiva%20-%20Club%20Atl%C3%A9tico%20San%20Lorenzo%20de%20Almagro!5e0!3m2!1ses-419!2sar!4v1769721942206!5m2!1ses-419!2sar",
 };
 
 /* 
@@ -35,8 +38,4 @@ Pendientes para la invitación digital:
 1. dress code: elegante y cambiar foto, -Para el dress code, faltaría los colores prohibidos q serían blanco rojo y el color del traje de Nico 
 2. agregar 2 datos bancarios reales
 3. agregar book de fotos si se llega con los tiempos
---
-Iglesia: (falta confirmar) Capilla Lorenzo Massa, Ciudad Deportiva San Lorenzo de Almagro (Entrar por Av. cruz y Rivera Indarte)
-Salon: 21hs Plaisir Eventos, Zuviria 4915, Lugano, Caba
-
 */
