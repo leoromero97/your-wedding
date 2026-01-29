@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Check, Copy } from "lucide-react";
 import Button from "@/components/Button";
 import Hero from "@/components/Hero";
 import {
-  BANK_DATA,
   DRESS_CODE,
+  HERO_IMAGE_URL,
   LOCATION_CHURCH,
   LOCATION_PARTY,
 } from "@/constants/constants";
 import { useWedding } from "@/context/WeddingContext";
 import Location from "@/components/sections/Location";
-import heroImage from "@/assets/hero-mili-nico.jpg";
 import Counter from "@/components/sections/Counter";
 import DressCode from "@/components/sections/DressCode";
+import Footer from "@/components/sections/Footer";
+import ModalGift from "@/components/ModalGift";
 
 export const ConfirmationPage = () => {
   const { addGuest, addSong, songs } = useWedding();
   const [songInput, setSongInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -49,16 +48,6 @@ export const ConfirmationPage = () => {
     alert("¡Gracias por confirmar!");
   };
 
-  const handleCopyAlias = async () => {
-    try {
-      await navigator.clipboard.writeText(BANK_DATA.alias);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Error al copiar: ", err);
-    }
-  };
-
   const handleAddSong = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!songInput.trim()) return;
@@ -82,7 +71,7 @@ export const ConfirmationPage = () => {
         title="¡Nos casamos!"
         subtitle="Mili & Nico"
         description="28 | 03 | 2026"
-        imageUrl={heroImage}
+        imageUrl={HERO_IMAGE_URL}
       />
 
       <main>
@@ -147,7 +136,7 @@ export const ConfirmationPage = () => {
               </Button>
             </form>
 
-            <div className="text-left bg-beige-50 p-6 rounded-lg shadow-sm">
+            <div className="text-left p-6 rounded-lg overflow-hidden border border-beige-200 shadow-sm overflow-y-hidden">
               <h3 className="text-xs font-bold uppercase mb-4 text-beige-400 tracking-widest">
                 Últimas agregadas
               </h3>
@@ -188,29 +177,12 @@ export const ConfirmationPage = () => {
           </Button>
         </section>
       </main>
-
-      <footer className="py-12 md:py-16 px-4 bg-beige-200 text-center  text-beige-500 gap-8 flex flex-col">
-        <p className="italic text-lg text-beige-800">
-          ¡Gracias por acompañarme en este momento tan importante! 🤍
-        </p>
-        <div className="flex w-full items-center justify-center">
-          <Button variant="filled" onClick={() => setIsConfirmModalOpen(true)}>
-            Confirmar asistencia
-          </Button>
-        </div>
-
-        <p className="text-xs">
-          Copyright 2026. Todos los derechos reservados. - Creado por{" "}
-          <a
-            href="https://leogromero-website.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            Leo Romero
-          </a>
-        </p>
-      </footer>
+      <Footer
+        message="¡Gracias por acompañarme en este momento tan importante! 🤍"
+        buttonTypes={{
+          onClick: () => setIsConfirmModalOpen(true),
+        }}
+      />
       {/* MODAL CONFIRMACIÓN ASISTENCIA */}
       {isConfirmModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
@@ -286,59 +258,11 @@ export const ConfirmationPage = () => {
           </form>
         </div>
       )}
-
-      {/* MODAL REGALO */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-beige-50 w-full max-w-md p-8 rounded-2xl relative shadow-2xl">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-6 text-2xl text-beige-400 hover:text-beige-800"
-            >
-              &times;
-            </button>
-            <h2 className="text-3xl font-bold mb-4 italic text-beige-900">
-              Colaborar con mis deseos 🤍
-            </h2>
-            <p className="text-beige-700 mb-6">
-              Podés realizar una transferencia a cualquiera de las siguientes cuentas:
-            </p>
-            <div className="bg-beige-100 p-6 rounded-xl border border-beige-200 space-y-4">
-              <div>
-                <p className="text-xs text-beige-500 uppercase font-bold">
-                  Alias
-                </p>
-                <p className="text-xl font-mono text-beige-900">
-                  {BANK_DATA.alias}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-beige-500 uppercase font-bold">
-                  Banco
-                </p>
-                <p className="text-md text-beige-800">{BANK_DATA.bankName}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 pt-8">
-              <Button
-                onClick={handleCopyAlias}
-                variant={copied ? "outlined" : "filled"}
-                icon={copied ? Check : Copy}
-                className="grow"
-              >
-                {copied ? "¡Copiado!" : "Copiar alias"}
-              </Button>
-              <Button
-                onClick={() => setIsModalOpen(false)}
-                variant="outlined"
-                className="grow"
-              >
-                Cerrar
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ModalGift
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        title="Colaborar con mis deseos 🤍"
+      />
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import type { LocationSectionTypes } from "@/components/sections/Location";
 import dressCodeImg from "@/assets/dresscode-transparent.png";
 
+export const HERO_IMAGE_URL = "/hero-mili-nico.jpg";
+
 export const TARGET_DATE = new Date("2026-03-28T00:00:00");
 
 export const LOCATION_PARTY: LocationSectionTypes = {
@@ -32,13 +34,13 @@ export const DRESS_CODE = {
 };
 
 export const BANK_DATA = {
-  alias: "SUEÑOS.MIOS.2026",
-  bankName: "Banco Santander - Cuenta Corriente",
+  alias: "SUEÑOS.UALA.2026",
+  bankName: "Ualá",
 };
 
 export const BANK_DATA_2 = {
-  alias: "SUEÑOS.MIOS.2026",
-  bankName: "Banco Santander - Cuenta Corriente",
+  alias: "SUEÑOS.GALICIA.2026",
+  bankName: "Banco Galicia - Cuenta Corriente",
 };
 /* 
 Pendientes para la invitación digital:

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthProvider';
-import { Eye, EyeOff, Lock, ShieldAlert } from 'lucide-react';
-import Button from '@/components/Button';
-import heroImage from "@/assets/hero-mili-nico.jpg";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
+import { Eye, EyeOff, Lock, ShieldAlert } from "lucide-react";
+import Button from "@/components/Button";
+import { HERO_IMAGE_URL } from "@/constants/constants";
 
 export const LoginPage = () => {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -35,21 +35,20 @@ export const LoginPage = () => {
     }
 
     if (login(cleanPassword)) {
-      navigate('/dashboard', { replace: true });
+      navigate("/dashboard", { replace: true });
     } else {
       setError("Contraseña incorrecta. Inténtalo de nuevo.");
-      setPassword(''); // Limpiamos por seguridad
+      setPassword(""); // Limpiamos por seguridad
     }
   };
 
   return (
     <div className="min-h-screen bg-beige-50 flex flex-col md:flex-row">
-      
       {/* SECCIÓN IMAGEN: Superior en Mobile, Derecha en Desktop */}
       <div className="w-full md:w-1/2 h-64 md:h-screen order-1 md:order-2 relative">
-        <img 
-          src={heroImage} 
-          alt="Boda Hero" 
+        <img
+          src={HERO_IMAGE_URL}
+          alt="Boda Hero"
           className="w-full h-full object-cover"
         />
         {/* Overlay para suavizar la imagen en mobile */}
@@ -59,7 +58,6 @@ export const LoginPage = () => {
       {/* SECCIÓN FORMULARIO */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16 order-2 md:order-1">
         <div className="max-w-md w-full space-y-8">
-          
           <header className="text-center md:text-left">
             <h2 className="text-4xl font-bold italic text-beige-900 font-serif">
               Panel de Control
@@ -78,14 +76,14 @@ export const LoginPage = () => {
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-beige-400 group-focus-within:text-beige-800 transition-colors">
                   <Lock size={18} />
                 </span>
-                
-                <input 
+
+                <input
                   required
-                  type={showPassword ? "text" : "password"} 
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className={`w-full pl-10 pr-12 py-3 bg-white border ${error ? 'border-red-300' : 'border-beige-200'} rounded-xl focus:ring-2 focus:ring-beige-500 outline-none transition-all shadow-sm`}
+                  className={`w-full pl-10 pr-12 py-3 bg-white border ${error ? "border-red-300" : "border-beige-200"} rounded-xl focus:ring-2 focus:ring-beige-500 outline-none transition-all shadow-sm`}
                 />
 
                 <button
@@ -105,14 +103,18 @@ export const LoginPage = () => {
               )}
             </div>
 
-            <Button type="submit" isFullWidth className="py-4 shadow-lg shadow-beige-900/10">
+            <Button
+              type="submit"
+              isFullWidth
+              className="py-4 shadow-lg shadow-beige-900/10"
+            >
               Entrar al Dashboard
             </Button>
           </form>
 
           <footer className="pt-8 text-center md:text-left">
-            <button 
-              onClick={() => navigate('/')}
+            <button
+              onClick={() => navigate("/")}
               className="text-beige-400 text-sm hover:text-beige-800 transition-colors underline-offset-4 hover:underline"
             >
               ← Volver a la invitación
