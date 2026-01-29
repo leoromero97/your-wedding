@@ -8,15 +8,13 @@ import {
   LOCATION_CHURCH,
   LOCATION_PARTY,
 } from "@/constants/constants";
-import { useWedding } from "@/context/WeddingContext"; // Custom Hook
+import { useWedding } from "@/context/WeddingContext";
 import Location from "@/components/sections/Location";
 import heroImage from "@/assets/hero-mili-nico.jpg";
 import Counter from "@/components/sections/Counter";
 
 export const ConfirmationPage = () => {
-  // --- CONTEXTO (Firebase) ---
   const { addGuest, addSong, songs } = useWedding();
-
   const [songInput, setSongInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -89,105 +87,37 @@ export const ConfirmationPage = () => {
 
       <main>
         <Counter buttonTypes={{ onClick: () => setIsConfirmModalOpen(true) }} />
-        {/* MODAL CONFIRMACIÓN ASISTENCIA */}
-        {isConfirmModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <form
-              onSubmit={handleConfirmSubmission}
-              className="bg-beige-50 w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6"
-            >
-              <h2 className="text-2xl font-bold italic text-beige-900 border-b border-beige-200 pb-2">
-                Confirmar Asistencia
-              </h2>
-
-              <div className="space-y-4">
-                <input
-                  required
-                  type="text"
-                  placeholder="Nombre"
-                  className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
-                  value={formData.firstName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, firstName: e.target.value })
-                  }
-                  maxLength={30}
-                />
-                <input
-                  required
-                  type="text"
-                  placeholder="Apellido"
-                  className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
-                  value={formData.lastName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, lastName: e.target.value })
-                  }
-                  maxLength={30}
-                />
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <p className="text-sm font-bold text-beige-700 uppercase">
-                  ¿Asistirás?
-                </p>
-                <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
-                  <input
-                    type="radio"
-                    checked={formData.isComing === true}
-                    onChange={() =>
-                      setFormData({ ...formData, isComing: true })
-                    }
-                    className="accent-beige-800 w-4 h-4"
-                  />
-                  <span className="text-beige-900">Sí, voy!</span>
-                </label>
-                <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
-                  <input
-                    type="radio"
-                    checked={formData.isComing === false}
-                    onChange={() =>
-                      setFormData({ ...formData, isComing: false })
-                    }
-                    className="accent-beige-800 w-4 h-4"
-                  />
-                  <span className="text-beige-900">No puedo asistir</span>
-                </label>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <Button type="submit" isFullWidth>
-                  Confirmar
-                </Button>
-                <Button
-                  type="button"
-                  variant="outlined"
-                  onClick={() => setIsConfirmModalOpen(false)}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </form>
-          </div>
-        )}
-
+        {/* BOTÓN FLOTANTE MOBILE */}
+        <div
+          className={`
+          md:hidden fixed bottom-4 left-0 w-full px-6 z-40 transition-all duration-500
+          ${showFloatingButton ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"}
+        `}
+        >
+          <Button
+            variant="filled"
+            isFullWidth
+            className="shadow-2xl shadow-black/20 text-lg"
+            onClick={() => setIsConfirmModalOpen(true)}
+          >
+            Confirmar asistencia
+          </Button>
+        </div>
         <Location
           address={LOCATION_CHURCH.address}
           addressUrl={LOCATION_CHURCH.addressUrl}
-          lat={LOCATION_CHURCH.lat}
-          lon={LOCATION_CHURCH.lon}
           startHour={LOCATION_CHURCH.startHour}
           title={LOCATION_CHURCH.title}
           type={LOCATION_CHURCH.type}
-          description={LOCATION_CHURCH.description}
+          iframeSrc={LOCATION_CHURCH.iframeSrc}
         />
         <Location
           address={LOCATION_PARTY.address}
           addressUrl={LOCATION_PARTY.addressUrl}
-          lat={LOCATION_PARTY.lat}
-          lon={LOCATION_PARTY.lon}
           startHour={LOCATION_PARTY.startHour}
           title={LOCATION_PARTY.title}
           type={LOCATION_PARTY.type}
-          description={LOCATION_PARTY.description}
+          iframeSrc={LOCATION_PARTY.iframeSrc}
         />
 
         {/* 4. DRESS CODE */}
@@ -267,22 +197,6 @@ export const ConfirmationPage = () => {
             Hacer regalo
           </Button>
         </section>
-        {/* BOTÓN FLOTANTE MOBILE */}
-        <div
-          className={`
-          md:hidden fixed bottom-8 left-0 w-full px-6 z-40 transition-all duration-500
-          ${showFloatingButton ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"}
-        `}
-        >
-          <Button
-            variant="filled"
-            isFullWidth
-            className="shadow-2xl shadow-black/20 text-lg"
-            onClick={() => setIsConfirmModalOpen(true)}
-          >
-            Confirmar asistencia
-          </Button>
-        </div>
       </main>
 
       <footer className="py-12 md:py-16 px-4 bg-beige-100 text-center border-t border-beige-200 text-beige-500 gap-8 flex flex-col">
@@ -307,6 +221,81 @@ export const ConfirmationPage = () => {
           </a>
         </p>
       </footer>
+      {/* MODAL CONFIRMACIÓN ASISTENCIA */}
+      {isConfirmModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <form
+            onSubmit={handleConfirmSubmission}
+            className="bg-beige-50 w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6"
+          >
+            <h2 className="text-2xl font-bold italic text-beige-900 border-b border-beige-200 pb-2">
+              Confirmar asistencia
+            </h2>
+
+            <div className="space-y-4">
+              <input
+                required
+                type="text"
+                placeholder="Nombre"
+                className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
+                maxLength={30}
+              />
+              <input
+                required
+                type="text"
+                placeholder="Apellido"
+                className="w-full p-3 bg-white border border-beige-300 rounded-lg focus:ring-2 focus:ring-beige-500 outline-none"
+                value={formData.lastName}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
+                maxLength={30}
+              />
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <p className="text-sm font-bold text-beige-700">
+                ¿Vas a asistir?
+              </p>
+              <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
+                <input
+                  type="radio"
+                  checked={formData.isComing === true}
+                  onChange={() => setFormData({ ...formData, isComing: true })}
+                  className="accent-beige-800 w-4 h-4"
+                />
+                <span className="text-beige-900">Sí, voy!</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer p-3 bg-beige-100 rounded-lg border border-beige-200">
+                <input
+                  type="radio"
+                  checked={formData.isComing === false}
+                  onChange={() => setFormData({ ...formData, isComing: false })}
+                  className="accent-beige-800 w-4 h-4"
+                />
+                <span className="text-beige-900">No puedo asistir</span>
+              </label>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button type="submit" isFullWidth>
+                Confirmar
+              </Button>
+              <Button
+                type="button"
+                variant="outlined"
+                onClick={() => setIsConfirmModalOpen(false)}
+              >
+                Cancelar
+              </Button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* MODAL REGALO */}
       {isModalOpen && (

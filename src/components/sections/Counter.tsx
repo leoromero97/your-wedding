@@ -9,7 +9,6 @@ export type CounterTypes = {
 export default function Counter({
   buttonTypes,
 }: Readonly<CounterTypes>): React.JSX.Element {
-  // 1. Iniciamos el estado en null para saber cuándo está "cargando"
   const [timeLeft, setTimeLeft] = useState<{
     months: number;
     days: number;
@@ -49,7 +48,7 @@ export default function Counter({
     return () => clearInterval(timer);
   }, []);
 
-  // 5. Función de labels que ya tenías
+
   const getLabelFormated = (label: string, value: number): string => {
     if (label.includes("Mes")) return value === 1 ? "Mes" : "Meses";
     if (label.includes("Día")) return value === 1 ? "Día" : "Días";
@@ -60,10 +59,10 @@ export default function Counter({
   };
 
   return (
-    <section className="py-12 md:py-16 bg-beige-100 text-center px-4 min-h-[400px] flex flex-col justify-center">
-      <h2 className="text-3xl font-semibold mb-8 italic">Falta muy poco...</h2>
+    <section className="py-6 px-2 md:py-16 bg-beige-100 text-center flex flex-col justify-center">
+      <h2 className="text-3xl font-semibold mb-4">Falta muy poco...</h2>
 
-      <div className="flex justify-center gap-2 md:gap-8 mb-10 min-h-[100px]">
+      <div className="flex justify-center gap-2 md:gap-8">
         {timeLeft ? (
           [
             { label: "Meses", value: timeLeft.months },

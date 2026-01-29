@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import "leaflet/dist/leaflet.css";
 // Importa tus componentes de página
 import { LoginPage } from "./pages/LoginPage";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
