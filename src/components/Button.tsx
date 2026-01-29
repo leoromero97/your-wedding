@@ -1,7 +1,7 @@
 import React, { type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react"; // Importamos el tipo para TypeScript
 
-type ButtonProps = {
+export type ButtonTypes = {
   children?: ReactNode;
   className?: string;
   variant?: "filled" | "outlined";
@@ -25,7 +25,7 @@ export default function Button({
   iconPosition = "start",
   iconSize = 18,
   ...props
-}: Readonly<ButtonProps>) {
+}: Readonly<ButtonTypes>) {
   // Clases base mejoradas con Flexbox para alinear el icono
   const baseClasses = `
   ${className}

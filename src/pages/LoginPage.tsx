@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { Eye, EyeOff, Lock, ShieldAlert } from 'lucide-react';
 import Button from '@/components/Button';
-import { HERO_IMAGE_URL } from '@/constants/constants';
+import heroImage from "@/assets/hero-mili-nico.jpg";
 
 export const LoginPage = () => {
   const [password, setPassword] = useState('');
@@ -48,7 +48,7 @@ export const LoginPage = () => {
       {/* SECCIÓN IMAGEN: Superior en Mobile, Derecha en Desktop */}
       <div className="w-full md:w-1/2 h-64 md:h-screen order-1 md:order-2 relative">
         <img 
-          src={HERO_IMAGE_URL} 
+          src={heroImage} 
           alt="Boda Hero" 
           className="w-full h-full object-cover"
         />
