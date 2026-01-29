@@ -7,7 +7,6 @@ import {
   BANK_DATA,
   LOCATION_CHURCH,
   LOCATION_PARTY,
-  TARGET_DATE,
 } from "@/constants/constants";
 import { useWedding } from "@/context/WeddingContext"; // Custom Hook
 import Location from "@/components/sections/Location";
@@ -290,14 +289,11 @@ export const ConfirmationPage = () => {
         <p className="italic text-lg text-beige-800">
           ¡Gracias por acompañarme en este momento tan importante! 🤍
         </p>
-              <div className="flex w-full items-center justify-center">
-        <Button
-          variant="filled"
-          onClick={() => setIsConfirmModalOpen(true)}
-        >
-          Confirmar asistencia
-        </Button>
-              </div>
+        <div className="flex w-full items-center justify-center">
+          <Button variant="filled" onClick={() => setIsConfirmModalOpen(true)}>
+            Confirmar asistencia
+          </Button>
+        </div>
 
         <p className="text-xs">
           Copyright 2026. Todos los derechos reservados. - Creado por{" "}

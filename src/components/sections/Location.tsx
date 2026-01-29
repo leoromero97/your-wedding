@@ -28,8 +28,9 @@ export default function Location({
     <section className="py-16 grid md:grid-cols-2 container mx-auto px-6 gap-12 border-b">
       <div>
         <h2 className="text-3xl font-bold mb-6 italic text-beige-900">
-          ¿Dónde?
+          {title.concat(' - ', type ?? '')}
         </h2>
+        <p>{description}</p>
         <div className="flex gap-2 items-center mb-2 ">
           <MapPin className="text-beige-700 w-5 h-5" />
           <p className="text-lg font-semibold text-beige-800">Ubicación:</p>
