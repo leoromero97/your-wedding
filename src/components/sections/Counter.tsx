@@ -93,7 +93,7 @@ export default function Counter({
           </div>
         )}
       </div>
-      <div className="hidden md:flex w-full items-center justify-center">
+      <div className="hidden md:flex w-full items-center justify-center pt-10">
         <Button {...buttonTypes} variant="filled">
           {buttonTypes?.children ?? "Confirmar asistencia"}
         </Button>

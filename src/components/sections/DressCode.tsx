@@ -19,9 +19,17 @@ export default function DressCode({
     Azul: "bg-blue-100",
   };
   return (
-    <section className="bg-beige-100 py-16 grid md:grid-cols-2 container mx-auto px-6 gap-6 md:gap-12">
+    <section className="bg-beige-100 py-16 grid md:grid-cols-2 px-6 gap-6 md:gap-12 justify-center place-items-center">
       <div className="gap-2 flex flex-col">
-        <img src={dressImage} alt="" />
+        <img
+          src={dressImage}
+          alt=""
+          height={400}
+          width={400}
+          className="h-40 w-fit md:h-64"
+        />
+      </div>
+      <div className="gap-4 flex flex-col">
         <h3 className="text-2xl font-bold mb-4 text-beige-900">
           {title.concat(" - ", dressCodeValue)}
         </h3>
@@ -31,9 +39,9 @@ export default function DressCode({
           <li>- Tacos</li>
           <li>- Zapatos</li>
         </ul>
-      </div>
-      <div className="gap-4 flex flex-col">
-        <h4 className="text-2xl font-bold mb-4 text-beige-900">Nos reservamos los colores</h4>
+        <h4 className="text-2xl font-bold mb-4 text-beige-900">
+          Nos reservamos los colores
+        </h4>
         <div className="grid grid-cols-3 gap-2 items-center justify-center">
           {invalidColors?.map((color) => (
             <div key={color} className="flex flex-col items-center">
