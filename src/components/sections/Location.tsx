@@ -24,9 +24,7 @@ export default function Location({
         <h3 className="text-3xl font-bold mb-6 italic text-beige-900">
           {titleLocation}
         </h3>
-        <p className="text-beige-700">
-          {`Horario de ingreso: ${startHour}`}
-        </p>
+        <p className="text-beige-700">{`Horario de ingreso: ${startHour}`}</p>
         <p className="mb-2 text-beige-700">{address}</p>
         <a
           href={addressUrl}
@@ -37,17 +35,17 @@ export default function Location({
           Ver en Google Maps
         </a>
       </div>
-        <div className=" rounded-lg overflow-hidden border border-beige-200 shadow-sm overflow-y-hidden">
-          <iframe
-            title={titleLocation}
-            src={iframeSrc}
-            width="400"
-            height="250"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="w-full"
-          ></iframe>
-        </div>
+      <div className="rounded-lg overflow-hidden border border-beige-200 shadow-sm overflow-y-hidden">
+        <iframe
+          title={titleLocation}
+          src={iframeSrc}
+          width="400"
+          height="250"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full"
+        ></iframe>
+      </div>
     </section>
   );
 }

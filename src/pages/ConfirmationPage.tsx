@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Check, Copy } from "lucide-react";
 import Button from "@/components/Button";
-import Illustration from "@/components/Illustration";
 import Hero from "@/components/Hero";
 import {
   BANK_DATA,
+  DRESS_CODE,
   LOCATION_CHURCH,
   LOCATION_PARTY,
 } from "@/constants/constants";
@@ -12,6 +12,7 @@ import { useWedding } from "@/context/WeddingContext";
 import Location from "@/components/sections/Location";
 import heroImage from "@/assets/hero-mili-nico.jpg";
 import Counter from "@/components/sections/Counter";
+import DressCode from "@/components/sections/DressCode";
 
 export const ConfirmationPage = () => {
   const { addGuest, addSong, songs } = useWedding();
@@ -29,7 +30,6 @@ export const ConfirmationPage = () => {
   // Lógica para ocultar el botón cuando el footer entra en vista
   useEffect(() => {
     const handleScroll = () => {
-      // Calculamos cuánto falta para llegar al final
       const scrollPosition = window.innerHeight + window.scrollY;
       const threshold = document.documentElement.scrollHeight - 150; // 150px antes del final
 
@@ -120,25 +120,15 @@ export const ConfirmationPage = () => {
           iframeSrc={LOCATION_PARTY.iframeSrc}
         />
 
-        {/* 4. DRESS CODE */}
-        <section className="py-16 text-center bg-beige-50 border-b flex flex-col items-center">
-          <Illustration
-            name="dress"
-            colorPrimary="#e7e5e4"
-            colorSecondary="#fafaf9"
-            className="h-24 w-24 mb-4"
-          />
-          <h2 className="text-2xl font-bold mb-4 tracking-widest text-beige-900">
-            Dress Code
-          </h2>
-          <p className="text-beige-700 italic text-lg">
-            El código de vestimenta es:{" "}
-            <span className="font-bold text-beige-800">Elegante</span>
-          </p>
-        </section>
+        <DressCode
+          title="Dress code"
+          dressCodeValue={DRESS_CODE.value}
+          dressImage={DRESS_CODE.image}
+          invalidColors={DRESS_CODE.invalidColors}
+        />
 
         {/* 5. MÚSICA (Conectado a Firebase) */}
-        <section className="py-16 bg-beige-100 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-xl mx-auto text-center">
             <h2 className="text-2xl font-bold mb-6 italic text-beige-900">
               ¡Podes recomendar alguna canción para bailar! 💃
@@ -183,10 +173,10 @@ export const ConfirmationPage = () => {
         </section>
 
         {/* 6. REGALO Y MODAL */}
-        <section className="py-20 text-center px-6">
+        <section className="py-20 text-center px-6 bg-beige-100">
           <p className="max-w-lg mx-auto text-xl mb-8 text-beige-800">
-            El mejor regalo es que vengas, pero si deseás regalarme algo, podés
-            colaborar con mis sueños y anhelos ✨<br />
+            El mejor regalo es que vengas, pero si deseás regalarnos algo, podés
+            colaborar con mis deseos ✨<br />
             <strong className="block mt-4">¡Muchas gracias!</strong>
           </p>
           <Button
@@ -199,7 +189,7 @@ export const ConfirmationPage = () => {
         </section>
       </main>
 
-      <footer className="py-12 md:py-16 px-4 bg-beige-100 text-center border-t border-beige-200 text-beige-500 gap-8 flex flex-col">
+      <footer className="py-12 md:py-16 px-4 bg-beige-200 text-center  text-beige-500 gap-8 flex flex-col">
         <p className="italic text-lg text-beige-800">
           ¡Gracias por acompañarme en este momento tan importante! 🤍
         </p>
@@ -308,10 +298,10 @@ export const ConfirmationPage = () => {
               &times;
             </button>
             <h2 className="text-3xl font-bold mb-4 italic text-beige-900">
-              Colaborar con mis sueños
+              Colaborar con mis deseos 🤍
             </h2>
             <p className="text-beige-700 mb-6">
-              Podés realizar una transferencia a la siguiente cuenta bancaria:
+              Podés realizar una transferencia a cualquiera de las siguientes cuentas:
             </p>
             <div className="bg-beige-100 p-6 rounded-xl border border-beige-200 space-y-4">
               <div>
