@@ -20,10 +20,10 @@ export const JustMarriedPage = () => {
   }, {} as Record<number, typeof guests>);
 
   return (
-    <div className="min-h-screen bg-beige-50 p-6 md:p-12">
+    <div className="min-h-screen bg-beige-50 p-6 md:p-12 font-serif">
       {/* HEADER CON ESTADÍSTICAS */}
       <header className="max-w-6xl mx-auto mb-12">
-        <h1 className="text-4xl font-bold italic text-beige-900 mb-8 font-serif text-center">
+        <h1 className="text-4xl font-bold text-beige-900 mb-8 font-serif text-center">
           Panel de Control
         </h1>
         
@@ -31,22 +31,22 @@ export const JustMarriedPage = () => {
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-beige-200 flex items-center gap-4">
             <div className="bg-beige-100 p-3 rounded-xl text-beige-600"><Users /></div>
             <div>
-              <p className="text-xs uppercase tracking-widest text-beige-500 font-bold">Total Invitados</p>
-              <p className="text-2xl font-bold text-stone-800">{totalGuests}</p>
+              <p className="text-xs uppercase tracking-widest text-beige-500 font-bold font-serif">Total Invitados</p>
+              <p className="text-2xl font-bold text-stone-800 font-serif">{totalGuests}</p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-beige-200 flex items-center gap-4">
             <div className="bg-green-50 p-3 rounded-xl text-green-600"><UserCheck /></div>
             <div>
-              <p className="text-xs uppercase tracking-widest text-green-600 font-bold">Confirmados</p>
-              <p className="text-2xl font-bold text-stone-800">{confirmedGuests}</p>
+              <p className="text-xs uppercase tracking-widest text-green-600 font-bold font-serif">Confirmados</p>
+              <p className="text-2xl font-bold text-stone-800 font-serif">{confirmedGuests}</p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-beige-200 flex items-center gap-4">
             <div className="bg-red-50 p-3 rounded-xl text-red-600"><UserX /></div>
             <div>
-              <p className="text-xs uppercase tracking-widest text-red-600 font-bold">No Asisten</p>
-              <p className="text-2xl font-bold text-stone-800">{declinedGuests}</p>
+              <p className="text-xs uppercase tracking-widest text-red-600 font-bold font-serif">No Asisten</p>
+              <p className="text-2xl font-bold text-stone-800 font-serif">{declinedGuests}</p>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@ export const JustMarriedPage = () => {
       <main className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
         {/* COLUMNA INVITADOS Y MESAS */}
         <section className="md:col-span-2 space-y-8">
-          <h2 className="text-xl font-bold text-stone-800 flex items-center gap-2 mb-4">
+          <h2 className="text-xl font-bold text-stone-800 flex items-center gap-2 mb-4 font-serif">
             <Users size={20} /> Gestión de Mesas
           </h2>
 

@@ -29,8 +29,7 @@ export const LOCATION_CHURCH: LocationSectionTypes = {
 export const DRESS_CODE = {
   value: "Elegante",
   image: dressCodeImg,
-  invalidColors: ["Blanco", "Rojo", "Azul"],
-  /* A confirmar el color del traje de Nico, por ahora dejo azul  */
+  invalidColors: ["Blanco", "Rojo", "Azul"]
 };
 
 export const BANK_DATA = {
@@ -44,7 +43,7 @@ export const BANK_DATA_2 = {
 };
 /* 
 Pendientes para la invitación digital:
-
-2. agregar 2 datos bancarios reales
-3. agregar book de fotos si se llega con los tiempos
+1. A confirmar el color del traje de Nico, por ahora dejo azul
+2. Cambiar 2 datos bancarios reales
+3. Agregar book de fotos si se llega con los tiempos
 */
