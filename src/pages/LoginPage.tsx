@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
-import { Eye, EyeOff, Lock, ShieldAlert } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Lock, ShieldAlert } from "lucide-react";
 import Button from "@/components/Button";
 import { HERO_IMAGE_URL } from "@/constants/constants";
 
@@ -57,23 +57,23 @@ export const LoginPage = () => {
 
       {/* SECCIÓN FORMULARIO */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16 order-2 md:order-1">
-        <div className="max-w-md w-full space-y-8">
+        <div className="max-w-md w-full space-y-4">
           <header className="text-center md:text-left">
-            <h2 className="text-4xl font-bold italic text-beige-900 font-serif">
+            <h1 className="text-4xl font-bold text-beige-900 font-serif">
               Panel de Control
-            </h2>
-            <p className="text-beige-600 mt-2 font-medium">
+            </h1>
+            <p className="text-beige-600 mt-2 font-medium font-serif">
               Ingresa la clave para gestionar los invitados.
             </p>
           </header>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs uppercase tracking-widest font-bold text-beige-500">
+              <label className="text-xs uppercase tracking-widest font-bold text-beige-500 font-serif">
                 Contraseña
               </label>
               <div className="relative group">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-beige-400 group-focus-within:text-beige-800 transition-colors">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-beige-400 group-focus-within:text-beige-800 transition-colors font-serif">
                   <Lock size={18} />
                 </span>
 
@@ -83,13 +83,13 @@ export const LoginPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className={`w-full pl-10 pr-12 py-3 bg-white border ${error ? "border-red-300" : "border-beige-200"} rounded-xl focus:ring-2 focus:ring-beige-500 outline-none transition-all shadow-sm`}
+                  className={`font-serif w-full pl-10 pr-12 py-3 bg-white border ${error ? "border-red-300" : "border-beige-200"} rounded-xl focus:ring-2 focus:ring-beige-500 outline-none transition-all shadow-sm`}
                 />
 
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-beige-400 hover:text-beige-800 transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-beige-400 hover:text-beige-800 transition-colors p-1 font-serif cursor-pointer"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -98,7 +98,7 @@ export const LoginPage = () => {
               {error && (
                 <div className="flex items-center gap-2 text-red-500 text-sm mt-2 animate-tw-animate-bounce">
                   <ShieldAlert size={14} />
-                  <span>{error}</span>
+                  <span className="font-serif">{error}</span>
                 </div>
               )}
             </div>
@@ -106,19 +106,21 @@ export const LoginPage = () => {
             <Button
               type="submit"
               isFullWidth
-              className="py-4 shadow-lg shadow-beige-900/10"
             >
               Entrar al Dashboard
             </Button>
           </form>
 
-          <footer className="pt-8 text-center md:text-left">
-            <button
+          <footer>
+            <Button
               onClick={() => navigate("/")}
-              className="text-beige-400 text-sm hover:text-beige-800 transition-colors underline-offset-4 hover:underline"
+              variant="outlined"
+              iconPosition="start"
+              icon={ChevronLeft}
+              isFullWidth
             >
-              ← Volver a la invitación
-            </button>
+              Volver a la invitación
+            </Button>
           </footer>
         </div>
       </div>

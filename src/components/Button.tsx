@@ -31,11 +31,13 @@ export default function Button({
   ${className}
     ${isFullWidth ? "w-full" : "w-max"} 
     flex items-center justify-center gap-2
-    rounded-md px-4 py-2 font-medium 
+    rounded-md px-4 py-2
     transition-all duration-200 
     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-beige-500
     active:scale-95
     cursor-pointer
+    font-serif
+    font-semibold
   `.trim();
 
   const variantClasses =
